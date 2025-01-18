@@ -1,6 +1,6 @@
 package com.codes.common.security;
 
-import com.account.microservice.model.AppUser;
+import com.codes.common.model.AppUser;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
