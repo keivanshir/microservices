@@ -3,6 +3,8 @@ package com.codes.common.exception;
 import com.codes.common.dto.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -67,4 +69,25 @@ public class GlobalException {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Response<String>> handleUserNotFoundException(UsernameNotFoundException ex){
+        Response<String> errorResponse = Response.<String>builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .message("نام کاربری یا رمز عبور اشتباه است!")
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Response<String>> handleBadCredentialsException(BadCredentialsException ex){
+        Response<String> errorResponse = Response.<String>builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .message("نام کاربری یا رمز عبور اشتباه است!")
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
 }
