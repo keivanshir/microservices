@@ -12,6 +12,7 @@ import com.codes.common.entity.Account;
 import com.codes.common.entity.AccountHistory;
 import com.codes.common.entity.Customer;
 import com.codes.common.enums.AccountStatus;
+import com.codes.common.exception.AccountExistsException;
 import com.codes.common.exception.IDExistsException;
 import com.codes.common.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -41,18 +42,24 @@ public class AccountServiceImplementation implements AccountService {
 
 
     @Override
+    @Transactional
     public Response<AccountDto> createAccount(CustomerDto customerDto) {
         Account account = new Account();
+        Account savedAccount = new Account();
         if (customerRepository.findCustomerByIdentificationNumber(customerDto.getIdentificationNumber()).isEmpty()){
-            account.setCustomer(customerRepository.save(mapper.mapToCustomer(customerDto)));
+            Customer savedCustomer = customerRepository.save(mapper.mapToCustomer(customerDto));
+            account.setCustomer(savedCustomer);
+            if (accountRepository.findAccountByCustomer_Id(savedCustomer.getId()).isEmpty()) {
+                account.setAccountNumber(generate14DigitNumber());
+                account.setAccountStatus(AccountStatus.ENABLED);
+                account.setRemaining(0L);
+                savedAccount = accountRepository.save(account);
+            } else throw new AccountExistsException("برای این مشتری یک شماره حساب موجود است!");
         } else throw new IDExistsException("کد ملی یا شناسه ملی یا کد فراگیر اتباع غیر ایرانی تکراری است!");
-        account.setAccountNumber(generate14DigitNumber());
-        account.setAccountStatus(AccountStatus.ENABLED);
-        account.setRemaining(0L);
 
         return Response.<AccountDto>builder()
                 .message("حساب بانکی ذخیره شد!")
-                .data(mapper.mapToAccountDto(account))
+                .data(mapper.mapToAccountDto(savedAccount))
                 .statusCode(201)
                 .build();
     }
@@ -117,11 +124,12 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public Response<AccountDto> getCustomerByAccountNumber(String accountNumber) {
+    public Response<CustomerDto> getCustomerByAccountNumber(String accountNumber) {
         Account account = accountRepository.findAccountByAccountNumber(accountNumber)
                 .orElseThrow(() -> new NotFoundException("شماره حساب مورد نظر پیدا نشد!"));
-        return Response.<AccountDto>builder()
-                .data(mapper.mapToAccountDto(account))
+
+        return Response.<CustomerDto>builder()
+                .data(mapper.mapToCustomerDto(account.getCustomer()))
                 .message("اطلاعات مشتری")
                 .statusCode(200)
                 .build();

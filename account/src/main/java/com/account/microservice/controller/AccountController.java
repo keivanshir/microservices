@@ -57,7 +57,7 @@ public class AccountController {
                     @ApiResponse(responseCode = "404", description = "account or customer not found")
             })
     @GetMapping("/getCustomer")
-    public ResponseEntity<Response<AccountDto>> getCustomerByAccountNumber(@RequestParam String accountNumber) {
+    public ResponseEntity<Response<CustomerDto>> getCustomerByAccountNumber(@RequestParam String accountNumber) {
         return new ResponseEntity<>(accountService.getCustomerByAccountNumber(accountNumber), HttpStatus.OK);
     }
 

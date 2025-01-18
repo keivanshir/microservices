@@ -31,10 +31,11 @@ public class Account {
     private AccountStatus accountStatus = AccountStatus.ENABLED;
 
     @CreatedDate
-    @Column(name = "CREATED_DATE")
+    @Column(name = "CREATED_DATE", nullable = false, updatable = false)
     private LocalDateTime createdDate; // unmodifiable
 
     @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE", nullable = false)
     private LocalDateTime modifiedDate;
 
     @ManyToOne

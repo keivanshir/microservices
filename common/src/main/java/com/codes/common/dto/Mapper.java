@@ -106,6 +106,7 @@ public class Mapper {
         CustomerDto customerDto = new CustomerDto();
 
         customerDto.setId(customer.getId());
+        customerDto.setName(customer.getName());
         customerDto.setIdentificationNumber(customer.getIdentificationNumber());
         customerDto.setCustomerType(customer.getCustomerType());
         customerDto.setAddress(customer.getAddress());
@@ -120,6 +121,7 @@ public class Mapper {
         Customer customer = new Customer();
 
         customer.setId(customerDto.getId());
+        customer.setName(customerDto.getName());
         customer.setIdentificationNumber(customerDto.getIdentificationNumber());
         customer.setCustomerType(customerDto.getCustomerType());
         customer.setAddress(customerDto.getAddress());

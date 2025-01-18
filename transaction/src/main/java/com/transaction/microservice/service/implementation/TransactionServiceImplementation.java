@@ -17,12 +17,16 @@ import com.transaction.microservice.service.implementation.transactionStrategy.T
 import com.transaction.microservice.service.implementation.transactionStrategy.TransactionStrategy;
 import com.transaction.microservice.specifications.AccountTurnoverSpecification;
 import com.transaction.microservice.utils.TransactionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +34,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class TransactionServiceImplementation implements TransactionService {
 
@@ -51,6 +56,7 @@ public class TransactionServiceImplementation implements TransactionService {
         this.mapper = mapper;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
     @Override
     public Response<TransactionDto> createTransaction(TransactionDto transactionDto) {
 
@@ -77,9 +83,12 @@ public class TransactionServiceImplementation implements TransactionService {
             exception.printStackTrace();
             transaction.setTransactionStatus(TransactionStatus.FAILED);
             // todo write log here
+            log.error("transaction saving failed: {}", exception.getMessage());
         } finally {
             savedTransaction = transactionRepository.save(transaction);
         }
+
+        log.error("transaction saved and completed!");
         return Response.<TransactionDto>builder()
                 .statusCode(200)
                 .message("تراکنش ثبت شد!")

@@ -9,7 +9,7 @@ public interface AccountService {
     Response<AccountDto> createAccount(CustomerDto customerDto);
     Response<AccountDto> updateAccount(AccountDto accountDto);
     Response<String> getAccountNumberByIdentificationNumber(String identificationNumber);
-    Response<AccountDto> getCustomerByAccountNumber(String accountNumber);
+    Response<CustomerDto> getCustomerByAccountNumber(String accountNumber);
     Response<String> getRemainingCashByAccountNumber(String accountNumber);
     Response<String> deleteAccount(String accountNumber);
 }

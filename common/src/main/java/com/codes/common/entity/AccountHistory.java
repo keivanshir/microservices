@@ -41,7 +41,7 @@ public class AccountHistory {
     @CreatedDate
     private LocalDateTime createdDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 

@@ -70,6 +70,16 @@ public class GlobalException {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(AccountExistsException.class)
+    public ResponseEntity<Response<String>> handleAccountExistsException(AccountExistsException ex){
+        Response<String> errorResponse = Response.<String>builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Response<String>> handleUserNotFoundException(UsernameNotFoundException ex){
         Response<String> errorResponse = Response.<String>builder()
