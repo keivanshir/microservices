@@ -1,12 +1,18 @@
 package com.codes.common.exception;
 
 import com.codes.common.dto.Response;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalException {
@@ -100,4 +106,23 @@ public class GlobalException {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Response<Map<String, String>>> handleArgumentNotValidException(ConstraintViolationException ex){
+
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getConstraintViolations().forEach((error) -> {
+            String fieldName = error.getPropertyPath().toString() + "=" + error.getInvalidValue();
+            String errorMessage = error.getMessage();
+            errors.put(fieldName, errorMessage);
+        });
+
+        Response<Map<String, String>> errorResponse = Response.<Map<String, String>>builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message("فیلدهای نامعتبر:")
+                .data(errors)
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

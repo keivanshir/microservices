@@ -2,6 +2,9 @@ package com.codes.common.entity;
 
 import com.codes.common.enums.CustomerType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +26,7 @@ public class Customer {
     private String name;
 
     @Column(name = "IDENTITFICATION_NUMBER", unique = true)
+    @Pattern(regexp = "\\d{10}", message = "کد ملی / شناسه ملی / کد فراگیر باید 10 رقمی باشد")
     private String identificationNumber;
 
     @Column(name = "BIRTH_OR_ESTABLISHMENT_DATE")
@@ -32,11 +36,13 @@ public class Customer {
     private CustomerType customerType;
 
     @Column(name = "PHONE_NUMBER")
+    @Pattern(regexp = "\\d{11}", message = "شماره تلفن همراه نامعتبر است")
     private String phoneNumber;
 
     private String address;
 
     @Column(name = "POSTAL_CODE")
+    @Pattern(regexp = "\\d{10}", message = "کد پستی باید 10 رقمی باشد")
     private String postalCode;
 
 }
