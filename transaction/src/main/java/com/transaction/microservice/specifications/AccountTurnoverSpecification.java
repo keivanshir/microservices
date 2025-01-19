@@ -49,8 +49,9 @@ public class AccountTurnoverSpecification {
                         toDate
                 ));
             }
-
-            return criteriaBuilder.or(predicateList.toArray(new Predicate[0]));
+            if (predicateList.isEmpty())
+                return null;
+            else return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
         };
     }
 }

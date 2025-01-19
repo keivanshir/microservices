@@ -13,7 +13,7 @@ import java.util.List;
 public interface TransactionService {
 
     Response<TransactionDto> createTransaction(TransactionDto transactionDto);
-    Response<TransactionStatus> getTransactionStatusByTrackingCode(Long trackingCode);
+    Response<TransactionDto> getTransactionStatusByTrackingCode(Long trackingCode);
 
     Response<List<TransactionDto>> findAllTransactionsByFilter(int page,
                                                      int size,

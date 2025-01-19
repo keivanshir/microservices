@@ -28,6 +28,9 @@ public class Transaction {
     @Column(name = "TRANSACTION_STATUS")
     private TransactionStatus transactionStatus;
 
+    @Column(name = "STATUS_REASON")
+    private String statusReason;
+
     @Column(name = "TRACKING_CODE")
     private String trackingCode;
 

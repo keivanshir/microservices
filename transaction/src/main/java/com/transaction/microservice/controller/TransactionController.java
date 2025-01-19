@@ -39,7 +39,7 @@ public class TransactionController {
     }
 
     @GetMapping("/getTransactionStatus")
-    public ResponseEntity<Response<TransactionStatus>> getTransactionStatus(@RequestParam Long trackingCode) {
+    public ResponseEntity<Response<TransactionDto>> getTransactionStatus(@RequestParam Long trackingCode) {
         return new ResponseEntity<>(transactionService.getTransactionStatusByTrackingCode(trackingCode), HttpStatus.OK);
     }
 

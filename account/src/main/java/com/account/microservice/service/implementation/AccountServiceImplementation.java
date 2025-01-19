@@ -118,7 +118,8 @@ public class AccountServiceImplementation implements AccountService {
                 .orElseThrow(() -> new NotFoundException("حساب بانکی برای مشتری پیدا نشد!"));
 
         return Response.<String>builder()
-                .message("شماره حساب: " + account.getAccountNumber())
+                .message("شماره حساب")
+                .data(account.getAccountNumber())
                 .statusCode(200)
                 .build();
     }
@@ -142,7 +143,8 @@ public class AccountServiceImplementation implements AccountService {
                 .orElseThrow(() -> new NotFoundException("شماره حساب مورد نظر پیدا نشد!"));
         return Response.<String>builder()
                 .statusCode(200)
-                .data("مانده: " + account.getRemaining())
+                .message("مانده")
+                .data(account.getRemaining().toString())
                 .build();
     }
 

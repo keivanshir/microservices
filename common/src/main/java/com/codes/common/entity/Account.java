@@ -38,7 +38,10 @@ public class Account {
     @Column(name = "LAST_MODIFIED_DATE", nullable = false)
     private LocalDateTime modifiedDate;
 
-    @ManyToOne
+    @Version
+    private Long version; // for optimistic locking mechanism
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 

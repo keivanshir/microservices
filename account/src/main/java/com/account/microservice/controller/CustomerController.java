@@ -20,15 +20,15 @@ public class CustomerController {
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
-
-    @Operation(summary = "creates customer",
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "customer created")
-            })
-    @PostMapping("/add")
-    public ResponseEntity<Response<CustomerDto>> createCustomer(@RequestBody CustomerDto customerDto) {
-        return new ResponseEntity<>(customerService.createCustomer(customerDto), HttpStatus.CREATED);
-    }
+//
+//    @Operation(summary = "creates customer",
+//            responses = {
+//                    @ApiResponse(responseCode = "201", description = "customer created")
+//            })
+//    @PostMapping("/add")
+//    public ResponseEntity<Response<CustomerDto>> createCustomer(@RequestBody CustomerDto customerDto) {
+//        return new ResponseEntity<>(customerService.createCustomer(customerDto), HttpStatus.CREATED);
+//    }
 
     @Operation(summary = "deletes customer",
             responses = {

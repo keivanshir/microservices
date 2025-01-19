@@ -17,6 +17,7 @@ import com.transaction.microservice.service.implementation.transactionStrategy.T
 import com.transaction.microservice.service.implementation.transactionStrategy.TransactionStrategy;
 import com.transaction.microservice.specifications.AccountTurnoverSpecification;
 import com.transaction.microservice.utils.TransactionUtils;
+import jakarta.persistence.OptimisticLockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,7 +57,7 @@ public class TransactionServiceImplementation implements TransactionService {
         this.mapper = mapper;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
+    @Transactional
     @Override
     public Response<TransactionDto> createTransaction(TransactionDto transactionDto) {
 
@@ -82,13 +83,13 @@ public class TransactionServiceImplementation implements TransactionService {
         } catch (Exception exception){
             exception.printStackTrace();
             transaction.setTransactionStatus(TransactionStatus.FAILED);
-            // todo write log here
-            log.error("transaction saving failed: {}", exception.getMessage());
+            log.error("transaction failed: {}", exception.getMessage());
+            transaction.setStatusReason(exception.getMessage());
         } finally {
             savedTransaction = transactionRepository.save(transaction);
         }
 
-        log.error("transaction saved and completed!");
+        log.info("transaction saved and completed!");
         return Response.<TransactionDto>builder()
                 .statusCode(200)
                 .message("تراکنش ثبت شد!")
@@ -113,11 +114,11 @@ public class TransactionServiceImplementation implements TransactionService {
     }
 
     @Override
-    public Response<TransactionStatus> getTransactionStatusByTrackingCode(Long trackingCode) {
+    public Response<TransactionDto> getTransactionStatusByTrackingCode(Long trackingCode) {
         Optional<Transaction> transactionOptional = transactionRepository.findTransactionByTrackingCode(String.valueOf(trackingCode));
         if (transactionOptional.isPresent()){
-            return Response.<TransactionStatus>builder()
-                    .data(transactionOptional.get().getTransactionStatus())
+            return Response.<TransactionDto>builder()
+                    .data(mapper.mapToTransactionDto(transactionOptional.get()))
                     .message("وضعیت تراکنش")
                     .statusCode(200)
                     .build();

@@ -9,6 +9,7 @@ import com.transaction.microservice.repository.AccountHistoryRepository;
 import com.transaction.microservice.repository.AccountRepository;
 import com.transaction.microservice.utils.TransactionUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class Decrease implements OperationStrategy {
@@ -24,6 +25,7 @@ public class Decrease implements OperationStrategy {
     }
 
     @Override
+    @Transactional
     public void operate(String sourceAccountNumber, String destinationAccountNumber, Long value) {
         Account sourceAccount = accountRepository.findAccountByAccountNumber(sourceAccountNumber)
                 .orElseThrow(() -> new NotFoundException("شماره حساب موجود نیست!"));

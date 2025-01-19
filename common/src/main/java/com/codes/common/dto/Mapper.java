@@ -140,6 +140,9 @@ public class Mapper {
         transactionDto.setTrackingCode(transaction.getTrackingCode());
         transactionDto.setSourceAccountNumber(transaction.getSourceAccountNumber());
         transactionDto.setDestinationAccountNumber(transaction.getDestinationAccountNumber());
+        transactionDto.setValue(transaction.getValue());
+        transactionDto.setStatusReason(transaction.getStatusReason());
+        transactionDto.setCreatedAt(transaction.getCreatedAt());
 
         return transactionDto;
     }
@@ -152,6 +155,9 @@ public class Mapper {
         transaction.setTrackingCode(transactionDto.getTrackingCode());
         transaction.setSourceAccountNumber(transactionDto.getSourceAccountNumber());
         transaction.setDestinationAccountNumber(transactionDto.getDestinationAccountNumber());
+        transaction.setValue(transactionDto.getValue());
+        transaction.setStatusReason(transactionDto.getStatusReason());
+        transaction.setCreatedAt(transactionDto.getCreatedAt());
 
         return transaction;
     }
