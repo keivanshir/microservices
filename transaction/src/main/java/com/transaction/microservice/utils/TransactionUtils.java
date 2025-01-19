@@ -19,14 +19,13 @@ public class TransactionUtils {
     }
 
     public Integer calculateFee(long value){
-        if( value > MIN_THRESHOLD && value < MAX_THRESHOLD){
+        if( value >= MIN_THRESHOLD && value < MAX_THRESHOLD){
             return (int) (value * config.feePercentage);
         } else if (value < MIN_THRESHOLD){
             return config.minimumFee;
-        } else if (value > MAX_THRESHOLD){
+        } else {
             return config.maximumFee;
         }
-        return config.minimumFee;
     }
 
     public boolean isEnabled(AccountStatus accountStatus){

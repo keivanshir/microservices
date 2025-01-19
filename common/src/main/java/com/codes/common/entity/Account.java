@@ -39,7 +39,7 @@ public class Account {
     private LocalDateTime modifiedDate;
 
     @Version
-    private Long version; // for optimistic locking mechanism
+    private Long version = 0L; // for optimistic locking mechanism
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CUSTOMER_ID")

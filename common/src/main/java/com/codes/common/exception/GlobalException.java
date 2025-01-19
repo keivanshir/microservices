@@ -2,12 +2,11 @@ package com.codes.common.exception;
 
 import com.codes.common.dto.Response;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -15,9 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalException {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response<String>> handleAllException(Exception ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message("خطای سرور")
@@ -28,6 +30,8 @@ public class GlobalException {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Response<String>> handleNotFoundException(NotFoundException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .message(ex.getMessage())
@@ -38,6 +42,8 @@ public class GlobalException {
 
     @ExceptionHandler(AccountDisabledException.class)
     public ResponseEntity<Response<String>> handleAccountDisabledException(AccountDisabledException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
@@ -48,6 +54,8 @@ public class GlobalException {
 
     @ExceptionHandler(InsufficientRemainingException.class)
     public ResponseEntity<Response<String>> handleInsufficientRemainingException(InsufficientRemainingException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
@@ -58,6 +66,8 @@ public class GlobalException {
 
     @ExceptionHandler(AccountsEqualException.class)
     public ResponseEntity<Response<String>> handleAccountsEqualException(AccountsEqualException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
@@ -68,6 +78,8 @@ public class GlobalException {
 
     @ExceptionHandler(IDExistsException.class)
     public ResponseEntity<Response<String>> handleIDExistsException(IDExistsException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
@@ -78,6 +90,8 @@ public class GlobalException {
 
     @ExceptionHandler(AccountExistsException.class)
     public ResponseEntity<Response<String>> handleAccountExistsException(AccountExistsException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
@@ -88,6 +102,8 @@ public class GlobalException {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Response<String>> handleUserNotFoundException(UsernameNotFoundException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .message("نام کاربری یا رمز عبور اشتباه است!")
@@ -98,6 +114,8 @@ public class GlobalException {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Response<String>> handleBadCredentialsException(BadCredentialsException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Response<String> errorResponse = Response.<String>builder()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .message("نام کاربری یا رمز عبور اشتباه است!")
@@ -108,7 +126,8 @@ public class GlobalException {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Response<Map<String, String>>> handleArgumentNotValidException(ConstraintViolationException ex){
-
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         Map<String, String> errors = new HashMap<>();
 
         ex.getConstraintViolations().forEach((error) -> {
