@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/transactions")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -34,16 +33,27 @@ public class TransactionController {
                     @ApiResponse(responseCode = "404", description = "not found"),
             })
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<TransactionDto>> createTransaction(@RequestBody TransactionDto transactionDto) {
         return new ResponseEntity<>(transactionService.createTransaction(transactionDto), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "gets transaction status",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "transaction status created")
+            })
     @GetMapping("/getTransactionStatus")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<TransactionDto>> getTransactionStatus(@RequestParam Long trackingCode) {
         return new ResponseEntity<>(transactionService.getTransactionStatusByTrackingCode(trackingCode), HttpStatus.OK);
     }
 
+    @Operation(summary = "finds all transactions by filter",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "transactions found")
+            })
     @GetMapping("/findAllTransactionsByFilter")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<List<TransactionDto>>> findAllTransactionsByFilter(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,

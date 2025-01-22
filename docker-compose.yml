@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Database Service
+  database:
+    container_name: oracle-db2
+    image: container-registry.oracle.com/database/free
+    environment:
+      ORACLE_PWD: db1234
+      ORACLE_INIT: /docker-entrypoint-initdb.d/create_schema.sql
+    ports:
+      - "1521:1521"  # Oracle listener port
+    volumes:
+      - ./create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+      - oracle_data:/opt/oracle/oradata  # Persist Oracle data
+    networks:
+      - internal_network
+
+
+  # Transaction App
+  transaction-app:
+    container_name: transaction-app
+    build: ./transaction
+    image: transaction-app
+    ports:
+      - "8083:8083"
+    networks:
+      - internal_network
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery:8761/eureka
+    depends_on:
+      - database
+      - discovery
+
+  # Account App
+  account-app:
+    container_name: account-app  # Set the container name
+    build: ./account
+    image: account-app
+    ports:
+      - "8082:8082"
+    networks:
+      - internal_network
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery:8761/eureka
+    depends_on:
+      - database
+      - discovery
+
+  # Gateway App
+  gateway:
+    container_name: gateway-app  # Set the container name
+    build: ./gateway
+    image: gateway-app
+    ports:
+      - "8081:8081"
+    networks:
+      - internal_network
+    depends_on:
+      - discovery
+      - transaction-app
+      - account-app
+
+  # Discovery App
+  discovery:
+    container_name: discovery-app  # Set the container name
+    build: ./discovery
+    image: discovery-app
+    ports:
+      - "8761:8761"
+    networks:
+      - internal_network
+
+# Networks
+networks:
+  internal_network:
+    driver: bridge
+
+# Volumes
+volumes:
+  oracle_data:

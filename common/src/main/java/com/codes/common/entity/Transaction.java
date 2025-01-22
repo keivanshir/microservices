@@ -3,6 +3,8 @@ package com.codes.common.entity;
 import com.codes.common.enums.TransactionStatus;
 import com.codes.common.enums.TransactionType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +36,13 @@ public class Transaction {
     @Column(name = "TRACKING_CODE")
     private String trackingCode;
 
+    @Positive(message = "مقدار باید عدد بزرگتر از صفر باشد")
     private Long value;
 
+    @Pattern(regexp = "\\d{14}", message = "شماره حساب مبدأ باید 14 رقمی باشد")
     private String sourceAccountNumber;
+
+    @Pattern(regexp = "\\d{14}", message = "شماره حساب مقصد باید 14 رقمی باشد")
     private String destinationAccountNumber;
 
     @CreatedDate

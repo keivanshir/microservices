@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/customers")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -36,6 +35,7 @@ public class CustomerController {
                     @ApiResponse(responseCode = "404", description = "customer not found"),
             })
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<String>> deleteCustomer(@PathVariable Long id) {
         return new ResponseEntity<>(customerService.deleteCustomer(id), HttpStatus.OK);
     }

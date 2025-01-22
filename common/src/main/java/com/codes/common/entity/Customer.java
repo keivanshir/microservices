@@ -2,9 +2,8 @@ package com.codes.common.entity;
 
 import com.codes.common.enums.CustomerType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +29,7 @@ public class Customer {
     private String identificationNumber;
 
     @Column(name = "BIRTH_OR_ESTABLISHMENT_DATE")
+    @Past(message = "تاریخ تولد یا تاسیس باید کمتر از تاریخ کنونی باشد")
     private LocalDate birthOrEstablishmentDate;
 
     @Column(name = "CUSTOMER_TYPE")

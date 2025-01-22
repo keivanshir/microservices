@@ -91,8 +91,8 @@ public class AccountServiceImplementation implements AccountService {
         accountHistory.setOldAccountStatus(account.getAccountStatus());
         accountHistory.setOldCash(account.getRemaining());
 
-        account.setRemaining(accountDto.getRemaining());
-        account.setAccountStatus(accountDto.getAccountStatus());
+        account.setRemaining(accountDto.getRemaining() == null ? account.getRemaining() : accountDto.getRemaining());
+        account.setAccountStatus(accountDto.getAccountStatus() == null ? account.getAccountStatus() : accountDto.getAccountStatus());
         account.setModifiedDate(LocalDateTime.now());
 
         accountHistory.setNewAccountStatus(accountDto.getAccountStatus());
@@ -144,7 +144,7 @@ public class AccountServiceImplementation implements AccountService {
         return Response.<String>builder()
                 .statusCode(200)
                 .message("مانده")
-                .data(account.getRemaining().toString())
+                .data(String.valueOf(account.getRemaining()))
                 .build();
     }
 

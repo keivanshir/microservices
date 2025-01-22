@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/accounts")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class AccountController {
 
     private final AccountService accountService;
@@ -27,6 +26,7 @@ public class AccountController {
                     @ApiResponse(responseCode = "201", description = "account created")
             })
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<AccountDto>> createAccount(@RequestBody CustomerDto customerDto) {
         return new ResponseEntity<>(accountService.createAccount(customerDto), HttpStatus.CREATED);
     }
@@ -37,6 +37,7 @@ public class AccountController {
                     @ApiResponse(responseCode = "404", description = "account not found")
             })
     @PutMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<AccountDto>> updateAccount(@RequestBody AccountDto accountDto) {
         return new ResponseEntity<>(accountService.updateAccount(accountDto), HttpStatus.CREATED);
     }
@@ -47,6 +48,7 @@ public class AccountController {
                     @ApiResponse(responseCode = "404", description = "account or customer not found")
             })
     @GetMapping("/getAccountNumber")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<String>> getAccountNumberByIdentificationNumber(@RequestParam String identificationNumber) {
         return new ResponseEntity<>(accountService.getAccountNumberByIdentificationNumber(identificationNumber), HttpStatus.OK);
     }
@@ -57,6 +59,7 @@ public class AccountController {
                     @ApiResponse(responseCode = "404", description = "account or customer not found")
             })
     @GetMapping("/getCustomer")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<CustomerDto>> getCustomerByAccountNumber(@RequestParam String accountNumber) {
         return new ResponseEntity<>(accountService.getCustomerByAccountNumber(accountNumber), HttpStatus.OK);
     }
@@ -67,6 +70,7 @@ public class AccountController {
                     @ApiResponse(responseCode = "404", description = "account not found")
             })
     @GetMapping("/getRemainingCash")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<String>> getRemainingCashByAccountNumber(@RequestParam String accountNumber) {
         return new ResponseEntity<>(accountService.getRemainingCashByAccountNumber(accountNumber), HttpStatus.OK);
     }
@@ -77,6 +81,7 @@ public class AccountController {
                     @ApiResponse(responseCode = "404", description = "account not found")
             })
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response<String>> deleteAccount(@RequestParam String accountNumber) {
         return new ResponseEntity<>(accountService.deleteAccount(accountNumber), HttpStatus.OK);
     }

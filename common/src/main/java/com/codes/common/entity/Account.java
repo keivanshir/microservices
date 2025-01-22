@@ -2,6 +2,8 @@ package com.codes.common.entity;
 
 import com.codes.common.enums.AccountStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +25,10 @@ public class Account {
     private Long id;
 
     @Column(name = "ACCOUNT_NUMBER", unique = true) // must be 14 digits
+    @Pattern(regexp = "\\d{14}", message = "شماره حساب باید 14 رقمی باشد")
     private String accountNumber; // unmodifiable
 
+    @PositiveOrZero(message = "مانده باید صفر یا بیشتر باشد")
     private Long remaining; // مانده
 
     @Column(name = "ACCOUNT_STATUS")
