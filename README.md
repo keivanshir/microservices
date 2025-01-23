@@ -15,7 +15,7 @@ this is the entity area of the application and other common codes like security 
 security is built via JWT and BASIC auth which you can choose between them with `app.auth.type` in related modules.
 ### documentation
 > [!NOTE]
-> there are two documentation endpoints one for transaction apis located:  `http://localhost:8083/swagger/swagger-ui.html`
+> there are two documentation endpoints one for transaction apis located: `http://localhost:8083/swagger/swagger-ui.html`
 > and the other one for account apis located: `http://localhost:8082/swagger/swagger-ui.html`
 
 
