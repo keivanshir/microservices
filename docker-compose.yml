@@ -5,13 +5,14 @@ services:
   database:
     container_name: oracle-db2
     image: container-registry.oracle.com/database/free
-    environment:
+    environment: 
       ORACLE_PWD: db1234
-      ORACLE_INIT: /docker-entrypoint-initdb.d/create_schema.sql
+      NLS_LANG: AMERICAN_AMERICA.AL32UTF8
+      TZ: Asia/Tehran
     ports:
       - "1521:1521"  # Oracle listener port
     volumes:
-      - ./create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+      - ./oracle-init:/opt/oracle/scripts/startup
       - oracle_data:/opt/oracle/oradata  # Persist Oracle data
     networks:
       - internal_network
@@ -28,6 +29,7 @@ services:
       - internal_network
     environment:
       - eureka.client.service-url.defaultZone=http://discovery:8761/eureka
+      - TZ=Asia/Tehran
     depends_on:
       - database
       - discovery
@@ -43,6 +45,7 @@ services:
       - internal_network
     environment:
       - eureka.client.service-url.defaultZone=http://discovery:8761/eureka
+      - TZ=Asia/Tehran
     depends_on:
       - database
       - discovery
@@ -54,6 +57,8 @@ services:
     image: gateway-app
     ports:
       - "8081:8081"
+    environment:
+      - TZ=Asia/Tehran
     networks:
       - internal_network
     depends_on:
@@ -68,6 +73,8 @@ services:
     image: discovery-app
     ports:
       - "8761:8761"
+    environment:
+      - TZ=Asia/Tehran
     networks:
       - internal_network
 
